@@ -50,13 +50,16 @@ export async function saveN8nConnection(userId: string, data: N8nConnection) {
 /**
  * Busca metadados da conexão (sem o token).
  */
+/**
+ * Busca metadados da conexão (sem o token).
+ */
 export async function getN8nConnection(userId: string) {
   const { data, error } = await supabase
     .from('n8n_connections')
     .select('n8n_url, client_id')
     .eq('user_id', userId)
-    .single();
-
-  if (error && error.code !== 'PGRST116') throw error;
-  return data;
+    .maybeSingle(); // ← MUDANÇA: maybeSingle() em vez de single()
+  
+  if (error) throw error;
+  return data; // Retorna null se não existir
 }

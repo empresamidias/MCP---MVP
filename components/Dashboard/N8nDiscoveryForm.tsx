@@ -22,7 +22,7 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
         // Fix: setError is now available in state
         setError(null);
         try {
-            const response = await fetch(`https://c82df4a6bc3c.ngrok-free.app/api/auth/init`, {
+            const response = await fetch(`https://oauth.jobdevsolutions.online/api/auth/init`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

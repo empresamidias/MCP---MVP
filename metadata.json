@@ -1,0 +1,8 @@
+{
+  "name": "N8N-Gemini Bridge Auth",
+  "description": "A high-performance authentication interface for the N8N-Gemini Bridge SaaS, featuring Supabase integration, session persistence, and a modern dashboard.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

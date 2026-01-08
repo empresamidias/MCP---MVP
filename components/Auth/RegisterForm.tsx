@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -34,20 +35,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
     setError(null);
 
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
 
       if (signUpError) throw signUpError;
-      
-      // Criação manual do perfil já que não há triggers
-      if (data.user) {
-        await supabase.from('profiles').insert({
-          id: data.user.id,
-          plan_type: 'free'
-        });
-      }
       
       setSuccess(true);
     } catch (err: any) {

@@ -5,17 +5,15 @@ import { supabase } from '../../lib/supabase';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import N8nConnectionForm from './N8nConnectionForm';
 import N8nOAuthConnect from './N8nOAuthConnect';
-import MCPPlayground from './MCPPlayground';
 import { getN8nConnection } from '../../lib/connections';
 
 interface DashboardProps {
   session: Session;
-  planType: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
+const Dashboard: React.FC<DashboardProps> = ({ session }) => {
   const [loggingOut, setLoggingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'status' | 'mcp' | 'discovery' | 'settings'>('status');
+  const [activeTab, setActiveTab] = useState<'status' | 'discovery' | 'settings'>('status');
   const [hasConnection, setHasConnection] = useState(false);
   const [connectionUrl, setConnectionUrl] = useState<string>('');
 
@@ -26,6 +24,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
         setHasConnection(true);
         setConnectionUrl(conn.n8n_url);
       } else {
+        // Se não houver conexão (null), resetamos o estado explicitamente
         setHasConnection(false);
         setConnectionUrl('');
       }
@@ -56,12 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
             </svg>
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-white">Bridge Dashboard</h2>
-              <span className={`text-[10px] uppercase font-black px-2 py-0.5 rounded-full ${planType === 'pro' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300'}`}>
-                {planType}
-              </span>
-            </div>
+            <h2 className="text-xl font-bold text-white">Bridge Dashboard</h2>
             <p className="text-xs text-slate-500">Logado como: {session.user.email}</p>
           </div>
         </div>
@@ -94,16 +88,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
               <span className="font-semibold">Visão Geral</span>
             </div>
           </button>
-
-          <button 
-            onClick={() => setActiveTab('mcp')}
-            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'mcp' ? 'bg-indigo-600/10 border-indigo-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
-          >
-            <div className="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              <span className="font-semibold">MCP Playground</span>
-            </div>
-          </button>
           
           <button 
             onClick={() => setActiveTab('discovery')}
@@ -126,16 +110,12 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
           </button>
 
           <div className="p-6 bg-slate-900/50 border border-slate-800 rounded-2xl mt-8">
-            <h3 className="text-sm font-semibold text-white mb-3">Status do Plano</h3>
-            <div className={`flex items-center gap-2 text-xs mb-4 font-bold ${planType === 'pro' ? 'text-amber-400' : 'text-slate-400'}`}>
-              <div className={`w-2 h-2 rounded-full animate-pulse ${planType === 'pro' ? 'bg-amber-500' : 'bg-slate-500'}`}></div>
-              Plano {planType.toUpperCase()} Ativo
+            <h3 className="text-sm font-semibold text-white mb-3">Status da Camada</h3>
+            <div className="flex items-center gap-2 text-xs text-indigo-400 mb-4">
+              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+              Criptografia AES-256 Ativa
             </div>
-            <p className="text-[10px] text-slate-500 italic">
-              {planType === 'free' 
-                ? 'Usuários free estão limitados a uma única conexão ativa por vez.' 
-                : 'Usuários PRO possuem limites estendidos e suporte prioritário.'}
-            </p>
+            <p className="text-[10px] text-slate-500">O Bridge utiliza descoberta dinâmica baseada no padrão OAuth 2.0 Authorization Server Metadata (RFC 8414).</p>
           </div>
         </div>
 
@@ -169,12 +149,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
             </div>
           )}
 
-          {activeTab === 'mcp' && (
-            <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-               <MCPPlayground userId={session.user.id} hasConnection={hasConnection} />
-            </div>
-          )}
-
           {activeTab === 'discovery' && (
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="mb-8">
@@ -183,7 +157,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
                   Conecte sua instância do n8n usando o fluxo oficial de autorização em uma janela popup segura.
                 </p>
               </div>
-              <N8nOAuthConnect userId={session.user.id} planType={planType} onSuccess={checkConnection} />
+              <N8nOAuthConnect userId={session.user.id} onSuccess={checkConnection} />
             </div>
           )}
 

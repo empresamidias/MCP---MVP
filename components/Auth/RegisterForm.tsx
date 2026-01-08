@@ -42,7 +42,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
 
       if (signUpError) throw signUpError;
       
-      // Criação manual do perfil já que não há triggers
       if (data.user) {
         await supabase.from('profiles').insert({
           id: data.user.id,
@@ -68,12 +67,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
           </svg>
         </div>
         <h3 className="text-xl font-bold text-white mb-2">Conta Criada!</h3>
-        <p className="text-slate-400 mb-8">
+        <p className="text-zinc-400 mb-8">
           Verifique seu e-mail para confirmar o cadastro e começar a usar o bridge.
         </p>
         <button
           onClick={onSwitchToLogin}
-          className="text-blue-400 font-semibold hover:text-blue-300 underline underline-offset-4"
+          className="text-sky-400 font-semibold hover:text-sky-300 underline underline-offset-4"
         >
           Ir para o Login
         </button>
@@ -93,45 +92,45 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
       )}
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">E-mail</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">E-mail</label>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="seu@email.com"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
+          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-2.5 px-4 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/40 transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Senha</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">Senha</label>
         <input
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Mínimo 6 caracteres"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
+          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-2.5 px-4 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/40 transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Confirmar Senha</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-2">Confirmar Senha</label>
         <input
           type="password"
           required
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Repita sua senha"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
+          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-2.5 px-4 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/40 transition-all"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+        className="w-full bg-sky-600 hover:bg-sky-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl shadow-lg shadow-sky-500/20 transition-all active:scale-95 flex items-center justify-center gap-2"
       >
         {loading ? <LoadingSpinner size="small" color="text-white" /> : 'Criar Conta'}
       </button>

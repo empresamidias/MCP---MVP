@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
@@ -21,7 +22,6 @@ const App: React.FC = () => {
       if (data) {
         setPlanType(data.plan_type);
       } else {
-        // Se não existir perfil, assumimos free
         setPlanType('free');
       }
     } catch (err) {
@@ -30,16 +30,27 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    // Check initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) {
-        fetchProfile(session.user.id);
-      }
-      setLoading(false);
-    });
+    const initSession = async () => {
+      try {
+        // Tenta obter a sessão com um timeout implícito
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        
+        if (error) throw error;
 
-    // Listen for auth changes
+        if (initialSession) {
+          setSession(initialSession);
+          await fetchProfile(initialSession.user.id);
+        }
+      } catch (err) {
+        console.error('Falha ao inicializar sessão:', err);
+      } finally {
+        // Garante que o loading encerre mesmo em caso de erro
+        setLoading(false);
+      }
+    };
+
+    initSession();
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -48,6 +59,7 @@ const App: React.FC = () => {
         fetchProfile(session.user.id);
       } else {
         setPlanType('free');
+        setSession(null);
       }
     });
 
@@ -56,14 +68,15 @@ const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <LoadingSpinner size="large" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-950 gap-4">
+        <LoadingSpinner size="large" color="text-sky-500" />
+        <p className="text-zinc-500 text-sm font-medium animate-pulse">Conectando ao Bridge...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 transition-colors duration-300">
+    <div className="min-h-screen bg-zinc-950 text-zinc-50 transition-colors duration-300">
       {!session ? (
         <AuthContainer />
       ) : (

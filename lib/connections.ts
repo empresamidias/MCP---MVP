@@ -8,16 +8,10 @@ export interface N8nConnection {
   api_key: string;
 }
 
-/**
- * Função de Servidor: saveN8nConnection
- * Recebe os dados brutos, criptografa o token sensível e persiste no Supabase 
- * usando os nomes de coluna corretos: n8n_url, client_id, encrypted_access_token.
- */
 export async function saveN8nConnection(userId: string, data: N8nConnection) {
   try {
     if (!userId) throw new Error('Usuário não autenticado.');
 
-    // Criptografia do token n8n (api_key) para salvar no campo encrypted_access_token
     const encryptedToken = encrypt(data.api_key);
     
     const { data: result, error } = await supabase
@@ -47,19 +41,13 @@ export async function saveN8nConnection(userId: string, data: N8nConnection) {
   }
 }
 
-/**
- * Busca metadados da conexão (sem o token).
- */
-/**
- * Busca metadados da conexão (sem o token).
- */
 export async function getN8nConnection(userId: string) {
   const { data, error } = await supabase
     .from('n8n_connections')
-    .select('n8n_url, client_id')
+    .select('id, n8n_url, client_id')
     .eq('user_id', userId)
-    .maybeSingle(); // ← MUDANÇA: maybeSingle() em vez de single()
+    .maybeSingle();
   
   if (error) throw error;
-  return data; // Retorna null se não existir
+  return data;
 }

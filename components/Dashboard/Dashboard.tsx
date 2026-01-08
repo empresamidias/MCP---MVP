@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import N8nConnectionForm from './N8nConnectionForm';
 import N8nOAuthConnect from './N8nOAuthConnect';
+import WorkflowList from './WorkflowList';
 import { getN8nConnection } from '../../lib/connections';
 
 interface DashboardProps {
@@ -14,8 +15,9 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
   const [loggingOut, setLoggingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'status' | 'discovery' | 'settings'>('status');
+  const [activeTab, setActiveTab] = useState<'status' | 'workflows' | 'discovery' | 'settings'>('status');
   const [hasConnection, setHasConnection] = useState(false);
+  const [connectionId, setConnectionId] = useState<string>('');
   const [connectionUrl, setConnectionUrl] = useState<string>('');
 
   const checkConnection = async () => {
@@ -23,15 +25,18 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
       const conn = await getN8nConnection(session.user.id);
       if (conn) {
         setHasConnection(true);
-        setConnectionUrl(conn.n8n_url);
+        setConnectionId(conn.id);
+        // Limpar a URL removendo sufixos MCP se houver
+        const cleanUrl = conn.n8n_url.replace(/\/mcp-server\/.*$/, '').replace(/\/$/, '');
+        setConnectionUrl(cleanUrl);
       } else {
         setHasConnection(false);
+        setConnectionId('');
         setConnectionUrl('');
       }
     } catch (err) {
       console.error(err);
       setHasConnection(false);
-      setConnectionUrl('');
     }
   };
 
@@ -93,6 +98,17 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
               <span className="font-semibold">Visão Geral</span>
             </div>
           </button>
+
+          <button 
+            disabled={!hasConnection}
+            onClick={() => setActiveTab('workflows')}
+            className={`w-full text-left p-4 rounded-2xl border transition-all disabled:opacity-50 ${activeTab === 'workflows' ? 'bg-sky-600/10 border-sky-500/50 text-white' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}
+          >
+            <div className="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <span className="font-semibold">Workflows</span>
+            </div>
+          </button>
           
           <button 
             onClick={() => setActiveTab('discovery')}
@@ -113,19 +129,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
               <span className="font-semibold">Configuração Direta</span>
             </div>
           </button>
-
-          <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl mt-8">
-            <h3 className="text-sm font-semibold text-white mb-3">Status do Plano</h3>
-            <div className={`flex items-center gap-2 text-xs mb-4 font-bold ${planType === 'pro' ? 'text-amber-400' : 'text-zinc-400'}`}>
-              <div className={`w-2 h-2 rounded-full animate-pulse ${planType === 'pro' ? 'bg-amber-500' : 'bg-zinc-500'}`}></div>
-              Plano {planType.toUpperCase()} Ativo
-            </div>
-            <p className="text-[10px] text-zinc-500 italic">
-              {planType === 'free' 
-                ? 'Usuários free estão limitados a uma única conexão ativa por vez.' 
-                : 'Usuários PRO possuem limites estendidos e suporte prioritário.'}
-            </p>
-          </div>
         </div>
 
         {/* Main Content Area */}
@@ -143,19 +146,30 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
                   <h3 className="text-2xl font-bold text-white mb-2">{hasConnection ? 'Conexão Estabelecida' : 'Aguardando Configuração'}</h3>
                   <p className="text-zinc-400 mb-8 max-w-md mx-auto">
                     {hasConnection 
-                      ? `Sua ponte está operando em ${connectionUrl}. Todas as chamadas para o Gemini estão sendo roteadas com sucesso.` 
+                      ? `Sua ponte está operando em ${connectionUrl}. Os workflows já estão disponíveis para visualização.` 
                       : 'Para começar, você precisa conectar sua instância do n8n através do processo de OAuth ou Configuração Direta.'}
                   </p>
-                  {!hasConnection && (
+                  {!hasConnection ? (
                     <button 
                       onClick={() => setActiveTab('discovery')}
                       className="bg-sky-600 hover:bg-sky-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-sky-600/20"
                     >
                       Conectar n8n
                     </button>
+                  ) : (
+                    <button 
+                      onClick={() => setActiveTab('workflows')}
+                      className="bg-zinc-800 hover:bg-zinc-700 text-white px-8 py-3 rounded-xl font-bold transition-all"
+                    >
+                      Ver Workflows
+                    </button>
                   )}
                </div>
             </div>
+          )}
+
+          {activeTab === 'workflows' && hasConnection && (
+            <WorkflowList userId={session.user.id} connectionId={connectionId} n8nBaseUrl={connectionUrl} />
           )}
 
           {activeTab === 'discovery' && (
@@ -175,14 +189,14 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
               <div className="mb-8">
                 <h3 className="text-xl font-bold text-white mb-2">⚙️ Configuração Manual</h3>
                 <p className="text-sm text-zinc-400 mb-6">
-                  Use esta opção se o fluxo OAuth automático não for compatível com sua versão ou se você já possui as credenciais em mãos.
+                  Use esta opção se o fluxo OAuth automático não for compatível com sua versão.
                 </p>
               </div>
               <N8nConnectionForm 
                 userId={session.user.id} 
                 onSuccess={() => {
-                  setActiveTab('status');
                   checkConnection();
+                  setActiveTab('status');
                 }} 
               />
             </div>

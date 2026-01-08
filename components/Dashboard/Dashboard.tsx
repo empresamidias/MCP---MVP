@@ -26,7 +26,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
       if (conn) {
         setHasConnection(true);
         setConnectionId(conn.id);
-        // Limpar a URL removendo sufixos MCP se houver
         const cleanUrl = conn.n8n_url.replace(/\/mcp-server\/.*$/, '').replace(/\/$/, '');
         setConnectionUrl(cleanUrl);
       } else {
@@ -51,7 +50,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Top Navbar */}
       <nav className="flex items-center justify-between mb-12 pb-6 border-b border-zinc-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/20 transform rotate-6">
@@ -87,7 +85,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Sidebar */}
         <div className="lg:col-span-1 space-y-4">
           <button 
             onClick={() => setActiveTab('status')}
@@ -100,9 +97,8 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
           </button>
 
           <button 
-            disabled={!hasConnection}
             onClick={() => setActiveTab('workflows')}
-            className={`w-full text-left p-4 rounded-2xl border transition-all disabled:opacity-50 ${activeTab === 'workflows' ? 'bg-sky-600/10 border-sky-500/50 text-white' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}
+            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'workflows' ? 'bg-sky-600/10 border-sky-500/50 text-white' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}
           >
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -131,7 +127,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
           </button>
         </div>
 
-        {/* Main Content Area */}
         <div className="lg:col-span-2">
           {activeTab === 'status' && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -168,8 +163,11 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
             </div>
           )}
 
-          {activeTab === 'workflows' && hasConnection && (
-            <WorkflowList userId={session.user.id} connectionId={connectionId} n8nBaseUrl={connectionUrl} />
+          {activeTab === 'workflows' && (
+            <WorkflowList 
+              userId={session.user.id} 
+              onConnect={() => setActiveTab('discovery')}
+            />
           )}
 
           {activeTab === 'discovery' && (

@@ -73,7 +73,7 @@ const N8nConnectionForm: React.FC<N8nConnectionFormProps> = ({ userId, onSuccess
             value={formData.n8n_url}
             onChange={(e) => setFormData({ ...formData, n8n_url: e.target.value })}
             placeholder="https://n8n.seudominio.com"
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-indigo-500/40 outline-none transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-blue-500/40 outline-none transition-all"
           />
         </div>
 
@@ -85,7 +85,7 @@ const N8nConnectionForm: React.FC<N8nConnectionFormProps> = ({ userId, onSuccess
             value={formData.client_id}
             onChange={(e) => setFormData({ ...formData, client_id: e.target.value })}
             placeholder="ID da automação ou Webhook"
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-indigo-500/40 outline-none transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-blue-500/40 outline-none transition-all"
           />
         </div>
 
@@ -97,19 +97,19 @@ const N8nConnectionForm: React.FC<N8nConnectionFormProps> = ({ userId, onSuccess
             value={formData.api_key}
             onChange={(e) => setFormData({ ...formData, api_key: e.target.value })}
             placeholder="O token será criptografado"
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-indigo-500/40 outline-none transition-all"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-700 focus:ring-2 focus:ring-blue-500/40 outline-none transition-all"
           />
         </div>
       </div>
 
-      <div className="flex items-start gap-3 p-4 bg-indigo-500/5 border border-indigo-500/10 rounded-xl group hover:border-indigo-500/30 transition-colors">
-        <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400">
+      <div className="flex items-start gap-3 p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl group hover:border-blue-500/30 transition-colors">
+        <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
         </div>
         <p className="text-xs text-slate-400 leading-relaxed">
-          Segurança Ativada: Suas credenciais são protegidas com <span className="text-indigo-300 font-bold uppercase">AES-256-CBC</span> e armazenadas como <span className="font-mono">encrypted_access_token</span>.
+          Segurança Ativada: Suas credenciais são protegidas com <span className="text-blue-300 font-bold uppercase">AES-256-CBC</span> e armazenadas como <span className="font-mono">encrypted_access_token</span>.
         </p>
       </div>
 
@@ -117,7 +117,7 @@ const N8nConnectionForm: React.FC<N8nConnectionFormProps> = ({ userId, onSuccess
         <button
           type="submit"
           disabled={loading}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-600/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-3"
         >
           {loading ? <LoadingSpinner size="small" color="text-white" /> : (
             <>

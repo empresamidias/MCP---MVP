@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { getN8nConnection } from '../../lib/connections';
@@ -273,13 +274,13 @@ const N8nOAuthConnect: React.FC<N8nOAuthConnectProps> = ({ userId, planType = 'f
               disabled={isWaiting || loading}
               value={n8nUrl}
               onChange={(e) => setN8nUrl(e.target.value)}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl py-3.5 px-4 text-slate-200 focus:ring-2 focus:ring-indigo-500/40 outline-none text-sm"
+              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl py-3.5 px-4 text-slate-200 focus:ring-2 focus:ring-blue-500/40 outline-none text-sm"
             />
             <button
               type="submit"
               disabled={loading || isWaiting}
               className={`px-10 py-3.5 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-3 whitespace-nowrap ${
-                isWaiting ? 'bg-amber-600/20 text-amber-500 border border-amber-500/30' : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/20'
+                isWaiting ? 'bg-amber-600/20 text-amber-500 border border-amber-500/30' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/20'
               } disabled:opacity-80`}
             >
               {loading && !isWaiting ? <LoadingSpinner size="small" color="text-white" /> : isWaiting ? <LoadingSpinner size="small" color="text-amber-500" /> : '🚀 Conectar via OAuth'}

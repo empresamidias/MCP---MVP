@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -72,7 +73,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
         </p>
         <button
           onClick={onSwitchToLogin}
-          className="text-indigo-400 font-semibold hover:text-indigo-300 underline underline-offset-4"
+          className="text-blue-400 font-semibold hover:text-blue-300 underline underline-offset-4"
         >
           Ir para o Login
         </button>
@@ -99,7 +100,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="seu@email.com"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
+          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
         />
       </div>
 
@@ -111,7 +112,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Mínimo 6 caracteres"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
+          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
         />
       </div>
 
@@ -123,14 +124,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Repita sua senha"
-          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
+          className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 px-4 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40 transition-all"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl shadow-lg shadow-indigo-500/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+        className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center justify-center gap-2"
       >
         {loading ? <LoadingSpinner size="small" color="text-white" /> : 'Criar Conta'}
       </button>

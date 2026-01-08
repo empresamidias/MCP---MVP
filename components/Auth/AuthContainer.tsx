@@ -11,7 +11,7 @@ const AuthContainer: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-tr from-indigo-600 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20 mb-4 transform rotate-12">
+          <div className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 mb-4 transform rotate-12">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
@@ -30,7 +30,7 @@ const AuthContainer: React.FC = () => {
               onClick={() => setView('login')}
               className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                 view === 'login'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/10'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -40,7 +40,7 @@ const AuthContainer: React.FC = () => {
               onClick={() => setView('register')}
               className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                 view === 'register'
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/10'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/10'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >

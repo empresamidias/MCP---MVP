@@ -12,14 +12,11 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const [metadata, setMetadata] = useState<OAuthMetadata | null>(null);
-  // Fix: Added missing error state and its setter
   const [error, setError] = useState<string | null>(null);
 
-  // Fix: Added React.FormEvent type to the event parameter
   const handleConnect = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        // Fix: setError is now available in state
         setError(null);
         try {
             const response = await fetch(`https://oauth.jobdevsolutions.online/api/auth/init`, {
@@ -27,17 +24,14 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'ngrok-skip-browser-warning': 'true' // Fundamental!
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({
-                    // Fix: Changed n8nUrl to url to correctly reference the state variable
                     n8n_url: url,
-                    // Fix: userId is now correctly accessed from component props
                     user_id: userId,
                 }),
             });
 
-            // Se der erro de CORS, ele nem chega aqui
             const data = await response.json();
             
             if (data.authUrl) {
@@ -45,7 +39,6 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
             }
         } catch (err: any) {
             console.error('Erro detalhado:', err);
-            // Fix: setError is now available in state
             setError("Erro de conexão com o servidor. Verifique se o ngrok está ativo.");
         } finally {
             setLoading(false);
@@ -55,7 +48,6 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
   return (
     <div className="space-y-6">
       <form onSubmit={handleConnect} className="space-y-4">
-        {/* Added error feedback to the UI */}
         {error && (
           <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center gap-3 animate-in fade-in">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -73,12 +65,12 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://suainstancia.n8n.cloud/mcp-server/http"
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 focus:ring-2 focus:ring-indigo-500/40 outline-none"
+              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-slate-200 focus:ring-2 focus:ring-blue-500/40 outline-none"
             />
             <button
               type="submit"
               disabled={loading}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50 flex items-center gap-2"
             >
               {loading ? <LoadingSpinner size="small" color="text-white" /> : 'Conectar'}
             </button>
@@ -94,7 +86,7 @@ const N8nDiscoveryForm: React.FC<N8nDiscoveryFormProps> = ({ userId }) => {
           </div>
           <div className="p-4 font-mono text-xs text-slate-400 max-h-60 overflow-y-auto space-y-1">
             {logs.map((log, i) => (
-              <div key={i} className={log.includes('✅') ? 'text-indigo-400 font-bold' : log.includes('❌') ? 'text-red-400' : ''}>
+              <div key={i} className={log.includes('✅') ? 'text-blue-400 font-bold' : log.includes('❌') ? 'text-red-400' : ''}>
                 {log}
               </div>
             ))}

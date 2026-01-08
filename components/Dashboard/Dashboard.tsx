@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../../lib/supabase';
@@ -48,7 +49,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
       {/* Top Navbar */}
       <nav className="flex items-center justify-between mb-12 pb-6 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 transform rotate-6">
+          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 transform rotate-6">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
@@ -85,7 +86,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
         <div className="lg:col-span-1 space-y-4">
           <button 
             onClick={() => setActiveTab('status')}
-            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'status' ? 'bg-indigo-600/10 border-indigo-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'status' ? 'bg-blue-600/10 border-blue-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
           >
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
@@ -95,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
           
           <button 
             onClick={() => setActiveTab('discovery')}
-            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'discovery' ? 'bg-indigo-600/10 border-indigo-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'discovery' ? 'bg-blue-600/10 border-blue-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
           >
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -105,7 +106,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
 
           <button 
             onClick={() => setActiveTab('settings')}
-            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'settings' ? 'bg-indigo-600/10 border-indigo-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+            className={`w-full text-left p-4 rounded-2xl border transition-all ${activeTab === 'settings' ? 'bg-blue-600/10 border-blue-500/50 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
           >
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
@@ -148,7 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
                   {!hasConnection && (
                     <button 
                       onClick={() => setActiveTab('discovery')}
-                      className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-indigo-600/20"
+                      className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20"
                     >
                       Conectar n8n
                     </button>

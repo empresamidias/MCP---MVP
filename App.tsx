@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
@@ -8,12 +7,35 @@ import LoadingSpinner from './components/UI/LoadingSpinner';
 
 const App: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
+  const [planType, setPlanType] = useState<string>('free');
   const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('plan_type')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      if (data) {
+        setPlanType(data.plan_type);
+      } else {
+        // Se não existir perfil, assumimos free
+        setPlanType('free');
+      }
+    } catch (err) {
+      console.error('Erro ao buscar plano:', err);
+    }
+  };
 
   useEffect(() => {
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        fetchProfile(session.user.id);
+      }
       setLoading(false);
     });
 
@@ -22,6 +44,11 @@ const App: React.FC = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session) {
+        fetchProfile(session.user.id);
+      } else {
+        setPlanType('free');
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -40,7 +67,7 @@ const App: React.FC = () => {
       {!session ? (
         <AuthContainer />
       ) : (
-        <Dashboard session={session} />
+        <Dashboard session={session} planType={planType} />
       )}
     </div>
   );

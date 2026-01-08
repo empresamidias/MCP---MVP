@@ -5,10 +5,11 @@ import { supabase } from '../../lib/supabase';
 
 interface N8nOAuthConnectProps {
   userId: string;
+  planType?: string;
   onSuccess?: () => void;
 }
 
-const N8nOAuthConnect: React.FC<N8nOAuthConnectProps> = ({ userId, onSuccess }) => {
+const N8nOAuthConnect: React.FC<N8nOAuthConnectProps> = ({ userId, planType = 'free', onSuccess }) => {
   const [n8nUrl, setN8nUrl] = useState('https://n8n.srv1130748.hstgr.cloud/mcp-server/http');
   const [loading, setLoading] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
@@ -220,6 +221,11 @@ const N8nOAuthConnect: React.FC<N8nOAuthConnectProps> = ({ userId, onSuccess }) 
           <p className="text-slate-400 text-sm mb-8 leading-relaxed">
             Instância do n8n vinculada com sucesso. O Gemini já pode acessar suas ferramentas.
           </p>
+          {planType === 'pro' && (
+            <div className="inline-block px-3 py-1 mb-6 bg-amber-500/20 border border-amber-500/30 rounded-full text-[10px] font-black text-amber-500 uppercase tracking-widest">
+              Benefício PRO: Multi-Conexão Disponível
+            </div>
+          )}
           <button
             onClick={() => setShowConfirmModal(true)}
             disabled={loading}
@@ -235,8 +241,22 @@ const N8nOAuthConnect: React.FC<N8nOAuthConnectProps> = ({ userId, onSuccess }) 
 
   return (
     <div className="space-y-8">
+      {planType === 'free' && (
+        <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-start gap-4">
+          <div className="text-amber-500 mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <h5 className="text-amber-500 font-bold text-xs uppercase tracking-wider mb-1">Limitação Plano Free</h5>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Você está no plano gratuito. É permitido apenas <span className="text-slate-200 font-bold">1 instância ativa</span>. Para conectar um novo n8n, você precisará desconectar o atual.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center gap-4 p-4 bg-slate-950/50 border border-slate-800 rounded-2xl">
-        <img src={N8N_LOGO} alt="n8n" className="w-12 h-12 rounded-xl p-1" />
+        <img src={N8N_LOGO} alt="n8n" className="w-12 h-12 rounded-xl bg-white p-1" />
         <div>
           <h4 className="font-bold text-white text-sm">Integração n8n MCP</h4>
           <p className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold">Autorização OAuth 2.0</p>

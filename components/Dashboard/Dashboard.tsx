@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../../lib/supabase';
@@ -9,9 +8,10 @@ import { getN8nConnection } from '../../lib/connections';
 
 interface DashboardProps {
   session: Session;
+  planType: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ session }) => {
+const Dashboard: React.FC<DashboardProps> = ({ session, planType }) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const [activeTab, setActiveTab] = useState<'status' | 'discovery' | 'settings'>('status');
   const [hasConnection, setHasConnection] = useState(false);
@@ -24,7 +24,6 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
         setHasConnection(true);
         setConnectionUrl(conn.n8n_url);
       } else {
-        // Se não houver conexão (null), resetamos o estado explicitamente
         setHasConnection(false);
         setConnectionUrl('');
       }
@@ -55,7 +54,12 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">Bridge Dashboard</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white">Bridge Dashboard</h2>
+              <span className={`text-[10px] uppercase font-black px-2 py-0.5 rounded-full ${planType === 'pro' ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300'}`}>
+                {planType}
+              </span>
+            </div>
             <p className="text-xs text-slate-500">Logado como: {session.user.email}</p>
           </div>
         </div>
@@ -110,12 +114,16 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
           </button>
 
           <div className="p-6 bg-slate-900/50 border border-slate-800 rounded-2xl mt-8">
-            <h3 className="text-sm font-semibold text-white mb-3">Status da Camada</h3>
-            <div className="flex items-center gap-2 text-xs text-indigo-400 mb-4">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-              Criptografia AES-256 Ativa
+            <h3 className="text-sm font-semibold text-white mb-3">Status do Plano</h3>
+            <div className={`flex items-center gap-2 text-xs mb-4 font-bold ${planType === 'pro' ? 'text-amber-400' : 'text-slate-400'}`}>
+              <div className={`w-2 h-2 rounded-full animate-pulse ${planType === 'pro' ? 'bg-amber-500' : 'bg-slate-500'}`}></div>
+              Plano {planType.toUpperCase()} Ativo
             </div>
-            <p className="text-[10px] text-slate-500">O Bridge utiliza descoberta dinâmica baseada no padrão OAuth 2.0 Authorization Server Metadata (RFC 8414).</p>
+            <p className="text-[10px] text-slate-500 italic">
+              {planType === 'free' 
+                ? 'Usuários free estão limitados a uma única conexão ativa por vez.' 
+                : 'Usuários PRO possuem limites estendidos e suporte prioritário.'}
+            </p>
           </div>
         </div>
 
@@ -157,7 +165,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
                   Conecte sua instância do n8n usando o fluxo oficial de autorização em uma janela popup segura.
                 </p>
               </div>
-              <N8nOAuthConnect userId={session.user.id} onSuccess={checkConnection} />
+              <N8nOAuthConnect userId={session.user.id} planType={planType} onSuccess={checkConnection} />
             </div>
           )}
 
